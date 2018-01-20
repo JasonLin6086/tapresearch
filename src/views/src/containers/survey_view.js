@@ -2,6 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+if (!Array.prototype.getEvenAndSort) {
+    Object.defineProperty(Array.prototype, 'getEvenAndSort', {
+        value: function() {
+          let newArray = [];
+          for (let i=0; i<this.length; i++) {
+            if (i%2 ==0) {
+              newArray.push(this[i]);
+            }
+          }
+          newArray.sort(function(a, b) { return a - b > 0; })
+          console.log(newArray);
+        }
+    });
+}
+
 export default class SurveyView extends Component{
     constructor(props) {
         super(props);
@@ -14,8 +29,21 @@ export default class SurveyView extends Component{
                       message_hash: message_hash
                     });
     }
+    componentDidMount() {
+      [12,3,2,1,7,6].getEvenAndSort();
+      var buttons = $('button');
+      for( var i = 0; i < buttons.length; ++i ) {
+        buttons.eq(i).click(
+        	// ONLY EDIT THE CODE BELOW THIS LINE
+        	function(i) {
+          	$('ul').append('<li>' + i + '</li>')
+        	}.bind(this, i)
+        	// ONLY EDIT THE CODE ABOVE THIS LINE
+        );
+      }
+    }
     changeUserIdentifier(e) {
-        this.setState({has_offer: null, offer_url: "", message_hash: {currency:"",max:"0",min:"0"}});        
+        this.setState({has_offer: null, offer_url: "", message_hash: {currency:"",max:"0",min:"0"}});
     }
     doSurvey() {
         let api = "https://www.tapresearch.com/supply_api/surveys/offer";
@@ -50,7 +78,11 @@ export default class SurveyView extends Component{
     render(){
         return(
             <div className="container">
-            <div className="row justify-content-center">
+            <button>A</button>
+            <button>B</button>
+            <button>C</button>
+            <ul></ul>
+            {/*<div className="row justify-content-center">
                 <div className="col-sm-4 col-md-4 align-items-center">
                     <div className="input-group" style={{marginBottom: "20px"}}>
                         <input type="text" id="user_identifier" className="form-control" placeholder="user identifier..." onChange={this.changeUserIdentifier.bind(this)}/>
@@ -86,7 +118,7 @@ export default class SurveyView extends Component{
                         )
                     }
                 </div>
-            </div>
+            </div>*/}
             </div>
         )
     }
